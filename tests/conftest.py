@@ -3,9 +3,8 @@ import uuid
 import pytest
 import requests
 
-from tests.schemas.get_books_response_schema import get_books_response_schema
 from tests.schemas.auth_schema import successful_auth_response_schema
-
+from tests.schemas.get_books_response_schema import get_books_response_schema
 
 BASE_URL = "https://book-club.qa.guru"
 CLUBS_ENDPOINT = f"{BASE_URL}/api/v1/clubs/"
@@ -34,6 +33,7 @@ def get_clubs():
         return response
 
     return _get_clubs
+
 
 @pytest.fixture
 def random_user():
