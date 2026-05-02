@@ -9,6 +9,7 @@ from tests.schemas.auth_schema import successful_auth_response_schema
 
 BASE_URL = "https://book-club.qa.guru"
 CLUBS_ENDPOINT = f"{BASE_URL}/api/v1/clubs/"
+REVIEWS_ENDPOINT = f"{BASE_URL}/api/v1/clubs/reviews/"
 REGISTER_ENDPOINT = f"{BASE_URL}/api/v1/users/register/"
 AUTH_ENDPOINT = f"{BASE_URL}/api/v1/auth/token/"
 
@@ -67,3 +68,23 @@ def login_user():
         return response
 
     return _login_user
+
+
+@pytest.fixture
+def get_reviews():
+    def _get_reviews():
+        response = requests.get(REVIEWS_ENDPOINT)
+        return response
+
+    return _get_reviews
+
+
+@pytest.fixture
+def create_club(login_user, existing_user):
+    def _create_club(data):
+        token = login_user(existing_user["username"], existing_user["password"]).json()["access"]
+        headers = {"Authorization": f"Bearer {token}"}
+        response = requests.post(CLUBS_ENDPOINT, json=data, headers=headers)
+        return response
+
+    return _create_club
